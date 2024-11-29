@@ -68,9 +68,21 @@ public class Block {
 	  *  coordinates of the top left corner of the block. 
 	 */
 	public void updateSizeAndPosition (int size, int xCoord, int yCoord) {
-	  /*
-	   * ADD YOUR CODE HERE
-	   */
+		// Check for invalid arguments
+		if (size <= 0 || size % 2 != 0) { // TODO Can size be 0?
+			throw new IllegalArgumentException("Size must be a positive even number.");
+		}
+		this.size = size;
+		this.xCoord = xCoord;
+		this.yCoord = yCoord;
+		// If the block is not a leaf, update the size and position of the children
+		if (this.children.length != 0) {
+			int half = size / 2;
+			this.children[0].updateSizeAndPosition(half, xCoord + half, yCoord); // UR
+			this.children[1].updateSizeAndPosition(half, xCoord, yCoord); // UL
+			this.children[2].updateSizeAndPosition(half, xCoord, yCoord + half); // LL
+			this.children[3].updateSizeAndPosition(half, xCoord + half, yCoord + half); // LR
+		}
 	}
 
  
