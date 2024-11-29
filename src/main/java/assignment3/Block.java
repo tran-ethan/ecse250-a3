@@ -14,7 +14,7 @@ public class Block {
 	private Color color;
 	private Block[] children; // {UR, UL, LL, LR}
 
-	public static Random gen = new Random(); 
+	public static Random gen = new Random(2);
  
  
 	/*
@@ -40,9 +40,22 @@ public class Block {
 	 * (i.e. they will all be initialized by default)
 	 */
 	public Block(int lvl, int maxDepth) {
-		/*
-		 * ADD YOUR CODE HERE
-		 */	 
+		this.level = lvl;
+		this.maxDepth = maxDepth;
+		this.children = new Block[0];
+		double rand = gen.nextDouble();
+		// if the level is equal to the max depth, then the block should be a leaf
+		if (lvl != maxDepth && rand < Math.exp(-0.25 * lvl)) {
+			// Subdivide the block
+			this.children = new Block[4];
+			for (int i = 0; i < 4; i++) {
+				this.children[i] = new Block(lvl + 1, maxDepth);
+			}
+		}
+		else {
+			// Give color to block, else color will remain null
+			this.color = GameColors.BLOCK_COLORS[gen.nextInt(GameColors.BLOCK_COLORS.length)];
+		}
 	}
 
 
