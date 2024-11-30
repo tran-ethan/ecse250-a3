@@ -250,10 +250,14 @@ public class Block {
 	 * 
 	 */
 	public boolean smash() {
-		/*
-		 * ADD YOUR CODE HERE
-		 */
-		return false;
+		if (level == 0 || level == maxDepth) {
+			return false;
+		}
+		this.children = new Block[4];
+		for (int i = 0; i < 4; i++) {
+			this.children[i] = new Block(level + 1, maxDepth);
+		}
+		return true;
 	}
  
  

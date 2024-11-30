@@ -5,7 +5,7 @@ public class Main {
         Block blockDepth = new Block(0,3);
         blockDepth.updateSizeAndPosition(16, 0, 0);
         blockDepth.printBlock();
-        blockDepth.reflect(1);
+        blockDepth.getSelectedBlock(0, 0, 1).smash();
 
         System.out.println("=================");
         blockDepth.printBlock();
