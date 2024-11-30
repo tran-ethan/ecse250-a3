@@ -174,22 +174,22 @@ public class Block {
 		// Recursive case: block not leaf
 		if (this.children.length != 0) {
 			// Recursive case
-			if (direction == 0) {
+			if (direction == 1) {
 				// Horizontal swap
-				Block temp = this.children[0];
+				Block tmp = this.children[0];
 				this.children[0] = this.children[1];
-				this.children[1] = temp;
-				temp = this.children[2];
+				this.children[1] = tmp;
+				Block tmp2 = this.children[2];
 				this.children[2] = this.children[3];
-				this.children[3] = temp;
+				this.children[3] = tmp2;
 			} else {
 				// Vertical swap
-				Block temp = this.children[0];
+				Block tmp = this.children[0];
 				this.children[0] = this.children[3];
-				this.children[3] = temp;
-				temp = this.children[1];
+				this.children[3] = tmp;
+				Block tmp2 = this.children[1];
 				this.children[1] = this.children[2];
-				this.children[2] = temp;
+				this.children[2] = tmp2;
 			}
 			for (Block b : this.children) {
 				b.reflect(direction);
@@ -206,9 +206,31 @@ public class Block {
 	 * counterclockwise. If this Block has no children, do nothing.
 	 */
 	public void rotate(int direction) {
-		/*
-		 * ADD YOUR CODE HERE
-		 */
+		if (direction < 0 || direction > 1) {
+			throw new IllegalArgumentException("Invalid direction.");
+		}
+		// Recursive case: block not leaf
+		if (this.children.length != 0) {
+			// Recursive case
+			if (direction == 1) {
+				// Clockwise rotation
+				Block tmp = this.children[0];
+				this.children[0] = this.children[1];
+				this.children[1] = this.children[2];
+				this.children[2] = this.children[3];
+				this.children[3] = tmp;
+			} else {
+				// Counterclockwise rotation
+				Block tmp = this.children[0];
+				this.children[0] = this.children[3];
+				this.children[3] = this.children[2];
+				this.children[2] = this.children[1];
+				this.children[1] = tmp;
+			}
+			for (Block b : this.children) {
+				b.rotate(direction);
+			}
+		}
 	}
  
 
