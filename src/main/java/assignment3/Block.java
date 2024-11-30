@@ -70,8 +70,10 @@ public class Block {
 	 */
 	public void updateSizeAndPosition (int size, int xCoord, int yCoord) {
 		// Check for invalid arguments
-		if (size <= 0 || size % 2 != 0) { // TODO Can size be 0?
-			throw new IllegalArgumentException("Size must be a positive even number.");
+		if (size != 1) {
+			if (size <= 0 || size % 2 != 0) { // TODO Can size be 0?
+				throw new IllegalArgumentException("Size must be a positive even number.");
+			}
 		}
 		this.size = size;
 		this.xCoord = xCoord;
@@ -270,11 +272,33 @@ public class Block {
 	 * arr[0][0] is the color of the unit cell in the upper left corner of this Block.
 	 */
 	public Color[][] flatten() {
-		/*
-		 * ADD YOUR CODE HERE
-		 */
-		return null;
-	}
+		int size = (int) Math.pow(2, maxDepth - this.level);
+		Color[][] arr = new Color[size][size];
+		if (this.children.length == 0) {
+			// Base case: block is a leaf
+			for (int i = 0; i < size; i++) {
+				for (int j = 0; j < size; j++) {
+					arr[i][j] = this.color;
+				}
+			}
+		} else {
+			// Recursive case
+			int half = size / 2;
+			Color[][] UR = this.children[0].flatten();
+			Color[][] UL = this.children[1].flatten();
+			Color[][] LL = this.children[2].flatten();
+			Color[][] LR = this.children[3].flatten();
+			for (int i = 0; i < half; i++) {
+				for (int j = 0; j < half; j++) {
+					arr[i][j] = UL[i][j];
+					arr[i][j + half] = UR[i][j];
+					arr[i + half][j] = LL[i][j];
+					arr[i + half][j + half] = LR[i][j];
+				}
+			}
+        }
+        return arr;
+    }
 
  
  
