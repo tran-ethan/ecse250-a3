@@ -42,18 +42,19 @@ public class Block {
 	public Block(int lvl, int maxDepth) {
 		this.level = lvl;
 		this.maxDepth = maxDepth;
-		this.children = new Block[0];
-		double rand = gen.nextDouble();
+
 		// if the level is equal to the max depth, then the block should be a leaf
-		if (lvl != maxDepth && rand < Math.exp(-0.25 * lvl)) {
-			// Subdivide the block
+		if (lvl != maxDepth && gen.nextDouble() < Math.exp(-0.25 * lvl)) {
+			// Recursive case: the block is not a leaf
 			this.children = new Block[4];
+			// Subdivide the block
 			for (int i = 0; i < 4; i++) {
 				this.children[i] = new Block(lvl + 1, maxDepth);
 			}
 		}
 		else {
-			// Give color to block, else color will remain null
+			// Base case: the block is a leaf
+			this.children = new Block[0];
 			this.color = GameColors.BLOCK_COLORS[gen.nextInt(GameColors.BLOCK_COLORS.length)];
 		}
 	}
@@ -98,10 +99,18 @@ public class Block {
   	* The order in which the blocks to draw appear in the list does NOT matter.
   	*/
 	public ArrayList<BlockToDraw> getBlocksToDraw() {
-		/*
-		 * ADD YOUR CODE HERE
-		 */
-		return null;
+		ArrayList<BlockToDraw> blocks = new ArrayList<>();
+		// Base case: the block is a leaf
+		if (this.children.length == 0) {
+			blocks.add(new BlockToDraw(this.color, this.xCoord, this.yCoord, this.size, 0));
+			blocks.add(new BlockToDraw(GameColors.FRAME_COLOR, this.xCoord, this.yCoord, this.size, 3));
+		} else {
+			// Recursive case: the block is not a leaf
+			for (Block b : this.children) {
+				blocks.addAll(b.getBlocksToDraw());
+			}
+		}
+		return blocks;
 	}
 
 	/*
