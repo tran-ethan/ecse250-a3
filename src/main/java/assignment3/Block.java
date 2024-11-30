@@ -14,7 +14,7 @@ public class Block {
 	private Color color;
 	private Block[] children; // {UR, UL, LL, LR}
 
-	public static Random gen = new Random(2);
+	public static Random gen = new Random(4);
  
  
 	/*
@@ -100,12 +100,12 @@ public class Block {
   	*/
 	public ArrayList<BlockToDraw> getBlocksToDraw() {
 		ArrayList<BlockToDraw> blocks = new ArrayList<>();
-		// Base case: the block is a leaf
+		// Base case: block is leaf
 		if (this.children.length == 0) {
 			blocks.add(new BlockToDraw(this.color, this.xCoord, this.yCoord, this.size, 0));
 			blocks.add(new BlockToDraw(GameColors.FRAME_COLOR, this.xCoord, this.yCoord, this.size, 3));
 		} else {
-			// Recursive case: the block is not a leaf
+			// Recursive case
 			for (Block b : this.children) {
 				blocks.addAll(b.getBlocksToDraw());
 			}
@@ -139,9 +139,23 @@ public class Block {
 	 * - if (x,y) is not within this Block, return null.
 	 */
 	public Block getSelectedBlock(int x, int y, int lvl) {
-		/*
-		 * ADD YOUR CODE HERE
-		 */
+		if (lvl < this.level || lvl > this.maxDepth) {
+			throw new IllegalArgumentException("Invalid level.");
+		}
+		if (x < this.xCoord || x >= this.xCoord + this.size || y < this.yCoord || y >= this.yCoord + this.size) {
+			return null;
+		}
+		// Base case
+		if (this.level == lvl || this.children.length == 0) {
+			return this;
+		}
+		// Recursive case
+		for (Block b : this.children) {
+			Block selectedBlock = b.getSelectedBlock(x, y, lvl);
+			if (selectedBlock != null) {
+				return selectedBlock;
+			}
+		}
 		return null;
 	}
 
@@ -154,9 +168,34 @@ public class Block {
 	 * 
 	 */
 	public void reflect(int direction) {
-		/*
-		 * ADD YOUR CODE HERE
-		 */
+		if (direction < 0 || direction > 1) {
+			throw new IllegalArgumentException("Invalid direction.");
+		}
+		// Recursive case: block not leaf
+		if (this.children.length != 0) {
+			// Recursive case
+			if (direction == 0) {
+				// Horizontal swap
+				Block temp = this.children[0];
+				this.children[0] = this.children[1];
+				this.children[1] = temp;
+				temp = this.children[2];
+				this.children[2] = this.children[3];
+				this.children[3] = temp;
+			} else {
+				// Vertical swap
+				Block temp = this.children[0];
+				this.children[0] = this.children[3];
+				this.children[3] = temp;
+				temp = this.children[1];
+				this.children[1] = this.children[2];
+				this.children[2] = temp;
+			}
+			for (Block b : this.children) {
+				b.reflect(direction);
+			}
+		}
+		// Base case: block is leaf - do nothing
 	}
  
 
