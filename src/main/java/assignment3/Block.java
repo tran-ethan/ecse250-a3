@@ -14,7 +14,7 @@ public class Block {
 	private Color color;
 	private Block[] children; // {UR, UL, LL, LR}
 
-	public static Random gen = new Random(4);
+	public static Random gen = new Random(123);
  
  
 	/*
