@@ -13,10 +13,13 @@ public class BlobGoal extends Goal{
 		Color[][] grid = board.flatten();
 		boolean[][] visited = new boolean[grid.length][grid.length];
 		int maxBlobSize = 0;
+		// Iterate through each cell in the grid, keeping track of unvisited cells of the target color
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid.length; j++) {
+				// Check max blob size only if cell is target color and has not been visited yet
 				if (grid[i][j].equals(targetGoal) && !visited[i][j]) {
 					int blobSize = undiscoveredBlobSize(i, j, grid, visited);
+					// Update max blob size
 					if (blobSize > maxBlobSize) {
 						maxBlobSize = blobSize;
 					}
