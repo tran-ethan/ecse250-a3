@@ -304,6 +304,11 @@ public class Block {
 		for (int i = 0; i < 4; i++) {
 			this.children[i] = new Block(level + 1, maxDepth);
 		}
+		int half = this.size / 2;
+		this.children[0].updateSizeAndPosition(half, this.xCoord + half, this.yCoord); // UR
+		this.children[1].updateSizeAndPosition(half, this.xCoord, this.yCoord); // UL
+		this.children[2].updateSizeAndPosition(half, this.xCoord, this.yCoord + half); // LL
+		this.children[3].updateSizeAndPosition(half, this.xCoord + half, this.yCoord + half); // LR
 		return true;
 	}
 
