@@ -37,10 +37,10 @@ public class BlobGoal extends Goal{
 
 
 	public int undiscoveredBlobSize(int i, int j, Color[][] unitCells, boolean[][] visited) {
-		if (unitCells[i][j] != targetGoal || visited[i][j]) {
-			// Base case: cell is not the target color or has already been visited
-			return 0;
-		} else {
+        if (i < 0 || i >= unitCells.length || j < 0 || j >= unitCells[0].length || unitCells[i][j] != targetGoal || visited[i][j]) {
+            // Base case: cell is out of bounds, not the target color, or has already been visited
+            return 0;
+        } else {
 			// Recursive case: check all neighboring cells
 			visited[i][j] = true;
 			// Recursively check orthogonal cells
