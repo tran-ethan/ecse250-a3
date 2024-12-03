@@ -13,7 +13,7 @@ public class BlobGoal extends Goal{
 		Color[][] grid = board.flatten();
 		boolean[][] visited = new boolean[grid.length][grid.length];
 		int maxBlobSize = 0;
-		// Iterate through each cell in the grid, keeping track of unvisited cells of the target color
+		// Iterate through each cell in the grid, keeping track of unvisited cells
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid.length; j++) {
 				// Check max blob size only if cell is target color and has not been visited yet
@@ -31,19 +31,19 @@ public class BlobGoal extends Goal{
 
 	@Override
 	public String description() {
-		return "Create the largest connected blob of " + GameColors.colorToString(targetGoal) 
-		+ " blocks, anywhere within the block";
+		return "Create the largest connected blob of " + GameColors.colorToString(targetGoal)
+				+ " blocks, anywhere within the block";
 	}
 
 
 	public int undiscoveredBlobSize(int i, int j, Color[][] unitCells, boolean[][] visited) {
-        if (i < 0 || i >= unitCells.length || j < 0 || j >= unitCells[0].length || unitCells[i][j] != targetGoal || visited[i][j]) {
-            // Base case: cell is out of bounds, not the target color, or has already been visited
-            return 0;
-        } else {
+		if (i < 0 || i >= unitCells.length || j < 0 || j >= unitCells.length || unitCells[i][j] != targetGoal || visited[i][j]) {
+			// Base case: cell is out of bounds, not the target color, or has already been visited
+			return 0;
+		} else {
 			// Recursive case: check all neighboring cells
 			visited[i][j] = true;
-			// Recursively check orthogonal cells
+			// Check orthogonal cells
 			int size = 1;
 			if (i > 0) {
 				// Check cell to the left
